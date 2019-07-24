@@ -17,6 +17,7 @@ namespace AeraStore_WebApp.Controllers
 
         public IActionResult Privacy()
         {
+            ViewData["Message"] = "Sua Pagina de Privacidade!";
             return View();
         }
 
