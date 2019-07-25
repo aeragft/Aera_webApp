@@ -11,18 +11,22 @@ namespace AeraStore_WebApp.Models
 
         [Required]
         public string Code { get; private set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
         public string Description { get; set; }
+        [Required]
         public string Category { get; set; }
-        public decimal UnitaryValue { get; set; }
+        [Required]
+        public decimal Cost { get; set; }
 
-        public Product(string code, string name,string description, string category, decimal unitaryValue)
+        public Product(string code, string name,string description, string category, decimal cost)
         {
             this.Code = code;
             this.Name = name;
             this.Description = description;
             this.Category = category;
-            this.UnitaryValue = unitaryValue;
+            this.Cost = cost;
         }
 
     }

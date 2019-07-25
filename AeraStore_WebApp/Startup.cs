@@ -57,6 +57,11 @@ namespace AeraStore_WebApp
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            serviceProvider
+                .GetService<ApplicationContext>()
+                .Database
+                .Migrate();
         }
     }
 }

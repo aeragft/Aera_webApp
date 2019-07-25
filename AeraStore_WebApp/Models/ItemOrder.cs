@@ -11,16 +11,16 @@ namespace AeraStore_WebApp.Models
         [Required]
         public int Quantity { get; private set; }
         [Required]
-        public decimal Value { get; set; }
+        public decimal UniValue { get; set; }
 
         public ItemOrder() { }
 
-        public ItemOrder(Order order, Product product, int quantity, decimal value)
+        public ItemOrder(Order order, Product product, int quantity, decimal uniValue)
         {
             Order = order;
             Product = product;
             Quantity = quantity;
-            Value = value;
+            UniValue = uniValue;
             
         }
     }
