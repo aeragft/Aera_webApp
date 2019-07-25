@@ -12,6 +12,7 @@ namespace AeraStore_WebApp.Controllers
     {
         public IActionResult Index()
         {
+            ViewData["Message"] = "Bem Vindo a Sua pagina Inicial Aera Store";
             return View();
         }
 

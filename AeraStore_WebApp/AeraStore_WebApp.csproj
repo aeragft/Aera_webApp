@@ -15,7 +15,6 @@
 
 
   <ItemGroup>
-    <Folder Include="Views\Home\Pedido\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
