@@ -1,4 +1,6 @@
 ﻿using System;
+using AeraStore_WebApp.Repositories;
+using AeraStore_WebApp.Repositories.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -31,6 +33,12 @@ namespace AeraStore_WebApp
             string connectionString = Configuration.GetConnectionString("Default");
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddTransient<IDataService, DataService >();
+            services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IItemOrderRepository, ItemOrderRespository>();
+            services.AddTransient<IClientRepository, ClientRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,9 +67,7 @@ namespace AeraStore_WebApp
             });
 
             serviceProvider
-                .GetService<ApplicationContext>()
-                .Database
-                .Migrate();
+                .GetService<IDataService>().SetupInitialDB();
         }
     }
 }
