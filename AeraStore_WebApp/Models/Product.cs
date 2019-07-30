@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace AeraStore_WebApp.Models
 {
@@ -28,6 +29,5 @@ namespace AeraStore_WebApp.Models
             this.Category = category;
             this.Cost = cost;
         }
-
     }
 }

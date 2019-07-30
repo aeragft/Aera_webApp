@@ -4,7 +4,7 @@ namespace AeraStore_WebApp.Controllers
 {
     public class PedidoController : Controller
     {
-        public IActionResult Cadastro()
+        public IActionResult OrderList()
         {
             return View();
         }

@@ -34,9 +34,14 @@ namespace AeraStore_WebApp
             services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
+            services.AddDistributedMemoryCache();
+            services.AddSession();
+
+
+
             services.AddTransient<IDataService, DataService >();
             services.AddTransient<IProductRepository, ProductRepository>();
-            services.AddTransient<IItemOrderRepository, ItemOrderRespository>();
+            services.AddTransient<IItemOrderRespository, ItemOrderRespository>();
             services.AddTransient<IClientRepository, ClientRepository>();
             services.AddTransient<IOrderRepository, OrderRepository>();
         }
@@ -57,13 +62,14 @@ namespace AeraStore_WebApp
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSession();
             app.UseCookiePolicy();
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{Code?}");
             });
 
             serviceProvider
