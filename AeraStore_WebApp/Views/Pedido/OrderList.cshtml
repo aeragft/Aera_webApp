@@ -1,0 +1,57 @@
+﻿@{
+    ViewData["Title"] = "Pedido - Resumo";
+}
+
+@Model Order;
+
+<br/>
+<h3>Lista de Pedido</h3>
+<br />
+
+<div class="panel panel-defualt">
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-md-12">
+                <h5>Nº do Pedido: @(Model.Id) </h5>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-3">
+                <h6>Informaçoes do Comprador: </h6>
+            </div>
+            <div class="col-md-3">
+                <div>Nome Comprador</div>
+                <div>002.949.011-02</div>
+                <div>(15) 3227-8280</div>
+            </div>
+            <div class="col-md-3">
+                <h5>Endereço de Entrega</h5>
+                <div>Rua: Avenida dos Entregadores, nº 250</div>
+                <div>Jardim Testador</div> <div>Brazuca</div>
+                <div>19015-955</div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-10">
+                <h4>Item</h4>
+            </div>
+            <div class="col-md-2">
+                <h4>Quantidade</h4>
+            </div>
+        </div>
+
+        @foreach (var item in Model.itens)
+        {
+            <div class="row">
+                <div class="col-md-10">
+                    <div>@item.Product.Name</div>
+                </div>
+                <div class="col-md-2">
+                    <div class="pull-right">@item.Quatity</div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

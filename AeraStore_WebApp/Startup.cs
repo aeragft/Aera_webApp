@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AeraStore_WebApp.Models;
+using AeraStore_WebApp.Repositories;
+using AeraStore_WebApp.Repositories.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,16 +23,6 @@ namespace AeraStore_WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddTransient<ICatalogo, Catalogo>();
-            //services.AddTransient<IRelatorio, Relatorio>();
-
-            //services.AddScoped<ICatalogo, Catalogo>();
-            //services.AddScoped<IRelatorio, Relatorio>();
-
-            var catalogo = new Catalogo();
-            services.AddSingleton<ICatalogo>(catalogo);
-            services.AddSingleton<IRelatorio>(new Relatorio(catalogo));
-
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -42,8 +30,20 @@ namespace AeraStore_WebApp
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
+            string connectionString = Configuration.GetConnectionString("Default");
+            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connectionString));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddDistributedMemoryCache();
+            services.AddSession();
+
+
+
+            services.AddTransient<IDataService, DataService >();
+            services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IItemOrderRespository, ItemOrderRespository>();
+            services.AddTransient<IClientRepository, ClientRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,24 +60,20 @@ namespace AeraStore_WebApp
                 app.UseHsts();
             }
 
-            ICatalogo catalogo = serviceProvider.GetService<ICatalogo>();
-            IRelatorio relatorio = serviceProvider.GetService<IRelatorio>();
-
-            app.Run(async (context) => 
-            {
-                await relatorio.ImprimirAsync(context);
-            });
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSession();
             app.UseCookiePolicy();
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{Code?}");
             });
+
+            serviceProvider
+                .GetService<IDataService>().SetupInitialDB();
         }
     }
 }

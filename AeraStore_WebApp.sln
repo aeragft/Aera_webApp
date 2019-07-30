@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AeraStore_WebApp", "AeraStore_WebApp\AeraStore_WebApp.csproj", "{6BD055AB-A5A3-4F76-BAFD-7CE56210DF70}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebApp", "WebApp", "{5DF6BC28-BB0A-4CDB-97C5-297AB6C9999F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,6 +20,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6BD055AB-A5A3-4F76-BAFD-7CE56210DF70} = {5DF6BC28-BB0A-4CDB-97C5-297AB6C9999F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {85E755AF-935E-40DA-8174-98249AB0E50A}
