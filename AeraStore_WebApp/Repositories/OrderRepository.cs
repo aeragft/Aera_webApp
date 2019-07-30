@@ -15,12 +15,57 @@ namespace AeraStore_WebApp.Repositories
         {
             this.contextAccessor = contextAccessor;
         }
-        private int? GetPedido()
+
+        public void AddItem(string code)
+        {
+            var product = context.Set<Product>()
+                .Where(p => p.Code == code)
+                .SingleOrDefault();
+
+            if(product == null)
+            {
+                throw new ArgumentException("Product is Not Found!");
+            }
+
+            var order = GetOrder();
+
+            var itemOrder = context.Set<ItemOrder>()
+                .Where(i => i.Product.Code == code && i.Order.Id == order.Id)
+                .SingleOrDefault();
+
+            if(itemOrder == null)
+            {
+                itemOrder = new ItemOrder(order, product, 1, product.Cost);
+                context.Set<ItemOrder>()
+                    .Add(itemOrder);
+                context.SaveChanges();
+            }
+
+        }
+
+        public Order GetOrder()
+        {
+            var orderId = GetOrderId();
+            var order = dbSet.
+                Where(o => o.Id == orderId)
+                .SingleOrDefault();
+
+            if(order == null)
+            {
+                order = new Order();
+                dbSet.Add(order);
+                context.SaveChanges();
+                SetOrderId(order.Id);
+            }
+            return order;
+        }
+
+        private int? GetOrderId()
         {
             return contextAccessor.HttpContext.Session.GetInt32("orderId");   
         }
 
-        private void SetOrder(int orderId)
+        private void SetOrderId(int orderId)
         {
             contextAccessor.HttpContext.Session.SetInt32("orderId", orderId);
         }

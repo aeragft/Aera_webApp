@@ -1,0 +1,95 @@
+﻿@{ 
+    ViewData["Title"] = "BuyChart";
+}
+@model IList<ItemOrder>;
+
+<h3>My Chart</h3>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+
+        <div class="row">
+            <div class="col-md-6">
+                Item
+            </div>
+            <div class="col-md-2 text-center">
+                Unitary Value
+            </div>
+            <div class="col-md-2 text-center">
+                Quantity
+            </div>
+            <div class="col-md-2">
+                <span class="pull-right">
+                    SubTotal
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+
+        @foreach (var item in Model)
+        {
+
+            <div class="row row-center product-line">
+                <div class="col-md-3">
+                    <img class="img-product-chart" src="~/images/products/@(item.Product.Code).jpg" />
+                </div>
+                <div class="col-md-3">@(item.Product.Name)</div>
+                <div class="col-md-3">@(item.Product.Description)</div>
+                <div class="col-md-3">@(item.Product.Category)</div>
+                <div class="col-md-2 text-center">R$ @(item.Product.Cost)</div>
+                <div class="col-md-2 text-center">
+                    <div class="input-group">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default">
+                                <span class="glyphicon-minus"></span>
+                            </button>
+                        </span>
+                        <input type="text" value="@(item.Quantity)"
+                               class="form-control text-center" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-default">
+                                <span class="glyphicon-plus"></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    R$<span class="pull-right" subtotal>
+                    @(item.Quantity * item.UniValue)
+                    </span>
+                </div>
+            </div>
+
+        }
+
+    </div>
+    <div class="panel-footer">
+        <div class="row">
+            <div class="col-md-10">
+                <span number-itens>
+                    Total:@(Model.Count())
+                    itens
+                </span>
+            </div>
+            <div class="col-md-2">
+                Total: R$ <span class="pull-right" total>
+                @(Model.Sum(i => i.Quantity * i.UniValue))
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-right">
+            <a class="btn btn-success" asp-action="catalogo">
+                Add More Products
+            </a>
+            <a class="btn btn-success" asp-action="OrderList">
+                Finish BuyChart</a>
+        </div>
+    </div>
+</div>

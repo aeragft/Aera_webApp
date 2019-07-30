@@ -1,6 +1,9 @@
 ﻿@{
     ViewData["Title"] = "Pedido - Resumo";
 }
+
+@Model Order;
+
 <br/>
 <h3>Lista de Pedido</h3>
 <br />
@@ -9,7 +12,7 @@
     <div class="panel-body">
         <div class="row">
             <div class="col-md-12">
-                <h5>Nº do Pedido: 0002</h5>
+                <h5>Nº do Pedido: @(Model.Id) </h5>
             </div>
         </div>
         <hr />
@@ -38,29 +41,17 @@
                 <h4>Quantidade</h4>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-10">
-                <div>Item Magico</div>
+
+        @foreach (var item in Model.itens)
+        {
+            <div class="row">
+                <div class="col-md-10">
+                    <div>@item.Product.Name</div>
+                </div>
+                <div class="col-md-2">
+                    <div class="pull-right">@item.Quatity</div>
+                </div>
             </div>
-            <div class="col-md-2">
-                <div class="pull-right">2</div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-10">
-                <div>Documentos Html</div>
-            </div>
-            <div class="col-md-2">
-                <div class="pull-right">3</div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-10">
-                <div>Codificação Dotnet</div>
-            </div>
-            <div class="col-md-2">
-                <div class="pull-right">1</div>
-            </div>
-        </div>
+        }
     </div>
 </div>
