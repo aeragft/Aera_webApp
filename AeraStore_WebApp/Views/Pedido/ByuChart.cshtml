@@ -41,15 +41,17 @@
                 <div class="col-md-2 text-center">
                     <div class="input-group">
                         <span class="input-group-btn">
-                            <button class="btn btn-default">
+                            <button class="btn btn-default"
+                                    onclick="chart.clickDecrement(this)">
                                 <span class="glyphicon-minus"></span>
                             </button>
                         </span>
                         <input type="text" value="@(item.Quantity)"
-                               class="form-control text-center" />
+                               class="form-control text-center" 
+                               onblur="chart.updateQtde(this)"/>
                         <span class="input-group-btn">
                             <button class="btn btn-default"
-                                   onclick="clickIncrement()" >
+                                   onclick="chart.clickIncrement(this)" >
                                 <span class="glyphicon-plus"></span>
                             </button>
                         </span>
@@ -100,24 +102,6 @@
 @section Scripts
     {
     <script type="text/javascript">
-        function clickIncrement(btn) {
-            var linhadoItem = $(btn).parents('[item-id]');
-            var itemId = $(linhadoItem).attr('item-id');
-            var newQTD = $(linhadoItem).find('input').val();
-
-            var data = {
-                Id: itemId,
-                Quantity: newQTD
-            };
-            $.ajax({
-                url: '/pedido/UpdateQTD',
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(data)
-
-
-            });
-        }
 
     </script>
 

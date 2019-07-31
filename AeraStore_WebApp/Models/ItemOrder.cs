@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
 namespace AeraStore_WebApp.Models
@@ -28,6 +29,11 @@ namespace AeraStore_WebApp.Models
             Quantity = quantity;
             UniValue = uniValue;
             
+        }
+
+        internal void UpDateQTDe(int quantity)
+        {
+            Quantity = quantity;
         }
     }
 }

@@ -7,10 +7,13 @@ namespace AeraStore_WebApp.Controllers
     public class PedidoController : Controller
     {
         private readonly IOrderRepository orderRepository;
+        private readonly IItemOrderRespository itemOrderRespository;
 
-        public PedidoController(IOrderRepository orderRepository)
+        public PedidoController(IOrderRepository orderRepository, 
+            IItemOrderRespository itemOrderRespository)
         {
             this.orderRepository = orderRepository;
+            this.itemOrderRespository = itemOrderRespository;
         }
         public IActionResult OrderList()
         {
@@ -28,9 +31,9 @@ namespace AeraStore_WebApp.Controllers
         }
 
         [HttpPost]
-        public void UpdateQTD()
+        public void UpdateQTD([FromBody]ItemOrder itemOrder)
         {
-
+            itemOrderRespository.UpdateQTD(itemOrder);
         }
     }
 }
