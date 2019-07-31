@@ -26,5 +26,11 @@ namespace AeraStore_WebApp.Controllers
             Order order = orderRepository.GetOrder();
             return View(order.Itens);
         }
+
+        [HttpPost]
+        public void UpdateQTD()
+        {
+
+        }
     }
 }
