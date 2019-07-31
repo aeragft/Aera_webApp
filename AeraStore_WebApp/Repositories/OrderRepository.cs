@@ -1,4 +1,5 @@
 ﻿using AeraStore_WebApp.Models;
+using AeraStore_WebApp.Models.ViewModels;
 using AeraStore_WebApp.Repositories.Interface;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -11,9 +12,12 @@ namespace AeraStore_WebApp.Repositories
     public class OrderRepository : BaseRepository<Order>, IOrderRepository
     {
         private readonly IHttpContextAccessor contextAccessor;
-        public OrderRepository(ApplicationContext context, IHttpContextAccessor contextAccessor) : base(context)
+        private readonly IItemOrderRespository itemOrderRespository;
+
+        public OrderRepository(ApplicationContext context, IHttpContextAccessor contextAccessor, IItemOrderRespository itemOrderRespository) : base(context)
         {
             this.contextAccessor = contextAccessor;
+            this.itemOrderRespository = itemOrderRespository;
         }
 
         public void AddItem(string code)
@@ -69,5 +73,23 @@ namespace AeraStore_WebApp.Repositories
         {
             contextAccessor.HttpContext.Session.SetInt32("orderId", orderId);
         }
+
+        public UpDateQTDeResponse UpdateQTD(ItemOrder itemOrder)
+        {
+            var itemorderDB = itemOrderRespository.GetItemOrder(itemOrder.Id);
+            
+
+            if (itemorderDB != null)
+            {
+                itemorderDB.UpDateQTDe(itemOrder.Quantity);
+                context.SaveChanges();
+                var chartViewModel = new ChartViewModel(GetOrder().Itens);
+
+                return new UpDateQTDeResponse(itemorderDB, chartViewModel);
+            }
+
+            throw new ArgumentException("ItemOrder not found!");
+        }
     }
+    
 }

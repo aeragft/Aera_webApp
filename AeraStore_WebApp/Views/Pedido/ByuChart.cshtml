@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "BuyChart";
 }
-@model IList<ItemOrder>;
+@model ChartViewModel;
 
 <h3>My Chart</h3>
 
@@ -27,7 +27,7 @@
     </div>
     <div class="panel-body">
 
-        @foreach (var item in Model)
+        @foreach (var item in Model.Itens)
         {
 
             <div class="row row-center product-line" item-id="@item.Id">
@@ -71,13 +71,13 @@
         <div class="row">
             <div class="col-md-10">
                 <span number-itens>
-                    Total:@(Model.Count())
+                    Total:@(Model.Itens.Count())
                     itens
                 </span>
             </div>
             <div class="col-md-2">
                 Total: R$ <span class="pull-right" total>
-                    @(Model.Sum(i => i.Quantity * i.UniValue))
+                    @(Model.Total)
                 </span>
             </div>
         </div>

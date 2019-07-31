@@ -16,18 +16,12 @@ namespace AeraStore_WebApp.Repositories
         {
         }
 
-        public void UpdateQTD(ItemOrder itemOrder)
+        public ItemOrder GetItemOrder(int itemOrderId)
         {
-            var itemorderDB =
+            return
             dbSet
-                .Where(ip => ip.Id == itemOrder.Id)
+                .Where(ip => ip.Id == itemOrderId)
                 .SingleOrDefault();
-
-            if(itemorderDB != null)
-            {
-                itemorderDB.UpDateQTDe(itemOrder.Quantity);
-                context.SaveChanges();
-            }
         }
     }
 }

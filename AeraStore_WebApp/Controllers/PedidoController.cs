@@ -1,6 +1,8 @@
 ﻿using AeraStore_WebApp.Models;
+using AeraStore_WebApp.Models.ViewModels;
 using AeraStore_WebApp.Repositories.Interface;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace AeraStore_WebApp.Controllers
 {
@@ -26,14 +28,15 @@ namespace AeraStore_WebApp.Controllers
             {
                 orderRepository.AddItem(code);
             }
-            Order order = orderRepository.GetOrder();
-            return View(order.Itens);
+            List<ItemOrder> itens = orderRepository.GetOrder().Itens;
+            ChartViewModel chartViewModel = new ChartViewModel(itens);
+            return View(chartViewModel);
         }
 
         [HttpPost]
-        public void UpdateQTD([FromBody]ItemOrder itemOrder)
+        public UpDateQTDeResponse UpdateQTD([FromBody]ItemOrder itemOrder)
         {
-            itemOrderRespository.UpdateQTD(itemOrder);
+            return orderRepository.UpdateQTD(itemOrder);
         }
     }
 }
