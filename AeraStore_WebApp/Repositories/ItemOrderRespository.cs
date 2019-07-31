@@ -23,5 +23,10 @@ namespace AeraStore_WebApp.Repositories
                 .Where(ip => ip.Id == itemOrderId)
                 .SingleOrDefault();
         }
+
+        public void RemoveItemOrder(int itemOrderId)
+        {
+            dbSet.Remove(GetItemOrder(itemOrderId));
+        }
     }
 }

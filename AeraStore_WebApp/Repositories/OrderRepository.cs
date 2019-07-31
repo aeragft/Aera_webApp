@@ -82,6 +82,12 @@ namespace AeraStore_WebApp.Repositories
             if (itemorderDB != null)
             {
                 itemorderDB.UpDateQTDe(itemOrder.Quantity);
+
+                if(itemOrder.Quantity == 0)
+                {
+                    itemOrderRespository.RemoveItemOrder(itemOrder.Id);
+                }
+
                 context.SaveChanges();
                 var chartViewModel = new ChartViewModel(GetOrder().Itens);
 

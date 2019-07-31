@@ -19,6 +19,14 @@ namespace AeraStore_WebApp.Models
         [Required]
         [DataMember]
         public decimal UniValue { get; set; }
+        [DataMember]
+        public decimal Subtotal
+        {
+            get
+            {
+                return Quantity * UniValue;
+            }
+        }
 
         public ItemOrder() { }
 

@@ -38,10 +38,26 @@ class Chart {
             data: JSON.stringify(data)
 
         }).done(function (response) {
-            location.reload();
+            let itemorder = responde.itemorder;
+            let itemline = $('[item-id = ' + itemorder.Id + ']')
+            itemline.find('input').val(itemorder.Quantity);
+            itemline.find('[subtotal]').html((itemorder.subtotal).twozeros());
+
+            let chartViewModel = response.chartViewModel;
+            $('[itens-number]').html('Total: ' + chartViewModel.itens.legth + ' itens');
+
+            $('[total]').html((carrinhoViewModel.total).twozeros());
+
+            if (itemorder.Quantity == 0) {
+                itemline.remove();
+            }
         });
 
     }
 }
 
 var chart = new Chart();
+
+Number.prototype.twozeros = function () {
+    return this.toFixed(2).replace('.', ',');
+}
