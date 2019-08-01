@@ -40,6 +40,7 @@ namespace AeraStore_WebApp.Controllers
         }
 
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public UpDateQTDeResponse UpdateQTD([FromBody]ItemOrder itemOrder)
         {
             return orderRepository.UpdateQTD(itemOrder);

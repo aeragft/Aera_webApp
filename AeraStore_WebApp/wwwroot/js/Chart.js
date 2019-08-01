@@ -1,13 +1,13 @@
 ﻿
 class Chart {
     clickIncrement(btn) {
-        let data = this.getData(btn);
+        let data = this.getData(button);
         data.Quantity++;
         this.postQTDe(data);
     }
 
-    clickDecrement(btn) {
-        let data = this.getData(btn);
+    clickDecrement(button) {
+        let data = this.getData(button);
         data.Quantity--;
         this.postQTDe(data);
 
@@ -21,21 +21,26 @@ class Chart {
     getData(element) {
         var linhadoItem = $(element).parents('[item-id]');
         var itemId = $(linhadoItem).attr('item-id');
-        var newQTD = $(linhadoItem).find('input').val();
+        var newQuantity = $(linhadoItem).find('input').val();
 
         return {
             Id: itemId,
-            Quantity: newQTD
+            Quantity: newQuantity
         };
     }
 
-    postQTDe() {
+    postQTDe(data) {
+
+        let token = $('[name=__RequestVerificationToken]').val();
+        let headers = {};
+        headers['RequestveriicationToken'] = token;
 
         $.ajax({
             url: '/pedido/UpdateQTD',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify(data)
+            data: JSON.stringify(data),
+            headers: headers
 
         }).done(function (response) {
             let itemorder = responde.itemorder;

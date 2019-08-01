@@ -34,7 +34,18 @@ namespace AeraStore_WebApp.Models
         public string Zipcode { get; set; } = "";
 
 
-
+        internal void Update(Client newClient)
+        {
+            this.Name = newClient.Name;
+            this.Email = newClient.Email;
+            this.Telephone = newClient.Telephone;
+            this.Address = newClient.Address;
+            this.Complement = newClient.Complement;
+            this.Neighborhood = newClient.Neighborhood;
+            this.County = newClient.County;
+            this.State = newClient.State;
+            this.Zipcode = newClient.Zipcode;
+        }
 
     }
 }

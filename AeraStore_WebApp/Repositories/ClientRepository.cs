@@ -18,7 +18,17 @@ namespace AeraStore_WebApp.Repositories
 
         public Client UpdateCli(int clientId, Client newClient)
         {
-            throw new NotImplementedException();
+            var clientDB = dbSet.Where(c => c.Id == clientId)
+                .SingleOrDefault();
+
+            if(clientDB == null)
+            {
+                throw new ArgumentException("Cadastro");
+            }
+
+            clientDB.Update(newClient);
+            context.SaveChanges();
+            return clientDB;
         }
     }
 }

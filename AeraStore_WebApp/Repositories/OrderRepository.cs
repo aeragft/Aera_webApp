@@ -2,6 +2,7 @@
 using AeraStore_WebApp.Models.ViewModels;
 using AeraStore_WebApp.Repositories.Interface;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,8 +53,11 @@ namespace AeraStore_WebApp.Repositories
         public Order GetOrder()
         {
             var orderId = GetOrderId();
-            var order = dbSet.
-                Where(o => o.Id == orderId)
+            var order = dbSet
+                .Include(p => p.Itens)
+                    .ThenInclude(i => i.Product)
+                .Include(p => p.Client)
+                .Where(o => o.Id == orderId)
                 .SingleOrDefault();
 
             if(order == null)
