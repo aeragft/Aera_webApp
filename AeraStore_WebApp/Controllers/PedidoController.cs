@@ -11,16 +11,22 @@ namespace AeraStore_WebApp.Controllers
         private readonly IOrderRepository orderRepository;
         private readonly IItemOrderRespository itemOrderRespository;
 
-        public PedidoController(IOrderRepository orderRepository, 
+        public PedidoController(IOrderRepository orderRepository,
             IItemOrderRespository itemOrderRespository)
         {
             this.orderRepository = orderRepository;
             this.itemOrderRespository = itemOrderRespository;
         }
-        public IActionResult OrderList()
+        public IActionResult OrderList(Client client)   
         {
-            Order order = orderRepository.GetOrder();
-            return View(order); 
+            if (ModelState.IsValid)
+            {
+                Order order = orderRepository.UpdateClient(client);
+                return View(order);
+            }
+            return RedirectToAction("Client");
+
+            
         }
         public IActionResult BuyChart(string code)
         {

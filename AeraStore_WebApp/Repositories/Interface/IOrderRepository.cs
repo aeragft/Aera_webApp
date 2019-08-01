@@ -11,6 +11,7 @@ namespace AeraStore_WebApp.Repositories.Interface
         Order GetOrder();
         void AddItem(string code);
         UpDateQTDeResponse UpdateQTD(ItemOrder itemOrder);
+        Order UpdateClient(Client client);
 
     }
 }

@@ -13,11 +13,13 @@ namespace AeraStore_WebApp.Repositories
     {
         private readonly IHttpContextAccessor contextAccessor;
         private readonly IItemOrderRespository itemOrderRespository;
+        private readonly IClientRepository clientRepository;
 
-        public OrderRepository(ApplicationContext context, IHttpContextAccessor contextAccessor, IItemOrderRespository itemOrderRespository) : base(context)
+        public OrderRepository(ApplicationContext context, IHttpContextAccessor contextAccessor, IItemOrderRespository itemOrderRespository, IClientRepository clientRepository) : base(context)
         {
             this.contextAccessor = contextAccessor;
             this.itemOrderRespository = itemOrderRespository;
+            this.clientRepository = clientRepository;
         }
 
         public void AddItem(string code)
@@ -95,6 +97,13 @@ namespace AeraStore_WebApp.Repositories
             }
 
             throw new ArgumentException("ItemOrder not found!");
+        }
+
+        public Order UpdateClient(Client client)
+        {
+            var order = GetOrder();
+            clientRepository.UpdateCli(order.Client.Id, client);
+            return order;
         }
     }
     

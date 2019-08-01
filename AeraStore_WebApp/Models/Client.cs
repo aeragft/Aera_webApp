@@ -12,6 +12,8 @@ namespace AeraStore_WebApp.Models
         public Client() { }
 
         public virtual Order Order {get; set;}
+        [MinLength (4, ErrorMessage = "Name is min characters")]
+        [MaxLength (65, ErrorMessage = "Name is max 65 characters")]
         [Required]
         public string Name { get; set; } = "";
         [Required]

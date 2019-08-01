@@ -9,8 +9,16 @@ namespace AeraStore_WebApp.Repositories
 {
     public class ClientRepository : BaseRepository<Client> , IClientRepository
     {
-        public ClientRepository(ApplicationContext context) : base(context)
+        private readonly IClientRepository clientRepository;
+
+        public ClientRepository(ApplicationContext context, IClientRepository clientRepository) : base(context)
         {
+            this.clientRepository = clientRepository;
+        }
+
+        public Client UpdateCli(int clientId, Client newClient)
+        {
+            throw new NotImplementedException();
         }
     }
 }
