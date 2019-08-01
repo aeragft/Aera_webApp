@@ -12,6 +12,8 @@ namespace AeraStore_WebApp.Models
         public Client() { }
 
         public virtual Order Order {get; set;}
+        [MinLength (4, ErrorMessage = "Name is min characters")]
+        [MaxLength (65, ErrorMessage = "Name is max 65 characters")]
         [Required]
         public string Name { get; set; } = "";
         [Required]
@@ -32,7 +34,18 @@ namespace AeraStore_WebApp.Models
         public string Zipcode { get; set; } = "";
 
 
-
+        internal void Update(Client newClient)
+        {
+            this.Name = newClient.Name;
+            this.Email = newClient.Email;
+            this.Telephone = newClient.Telephone;
+            this.Address = newClient.Address;
+            this.Complement = newClient.Complement;
+            this.Neighborhood = newClient.Neighborhood;
+            this.County = newClient.County;
+            this.State = newClient.State;
+            this.Zipcode = newClient.Zipcode;
+        }
 
     }
 }

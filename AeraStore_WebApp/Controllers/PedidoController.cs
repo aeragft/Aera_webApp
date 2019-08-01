@@ -1,21 +1,32 @@
 ﻿using AeraStore_WebApp.Models;
+using AeraStore_WebApp.Models.ViewModels;
 using AeraStore_WebApp.Repositories.Interface;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace AeraStore_WebApp.Controllers
 {
     public class PedidoController : Controller
     {
         private readonly IOrderRepository orderRepository;
+        private readonly IItemOrderRespository itemOrderRespository;
 
-        public PedidoController(IOrderRepository orderRepository)
+        public PedidoController(IOrderRepository orderRepository,
+            IItemOrderRespository itemOrderRespository)
         {
             this.orderRepository = orderRepository;
+            this.itemOrderRespository = itemOrderRespository;
         }
-        public IActionResult OrderList()
+        public IActionResult OrderList(Client client)   
         {
-            Order order = orderRepository.GetOrder();
-            return View(order); 
+            if (ModelState.IsValid)
+            {
+                Order order = orderRepository.UpdateClient(client);
+                return View(order);
+            }
+            return RedirectToAction("Client");
+
+            
         }
         public IActionResult BuyChart(string code)
         {
@@ -23,8 +34,16 @@ namespace AeraStore_WebApp.Controllers
             {
                 orderRepository.AddItem(code);
             }
-            Order order = orderRepository.GetOrder();
-            return View(order.Itens);
+            List<ItemOrder> itens = orderRepository.GetOrder().Itens;
+            ChartViewModel chartViewModel = new ChartViewModel(itens);
+            return View(chartViewModel);
+        }
+
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public UpDateQTDeResponse UpdateQTD([FromBody]ItemOrder itemOrder)
+        {
+            return orderRepository.UpdateQTD(itemOrder);
         }
     }
 }

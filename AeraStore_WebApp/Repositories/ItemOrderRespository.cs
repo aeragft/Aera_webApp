@@ -9,8 +9,24 @@ namespace AeraStore_WebApp.Repositories
 {
     public class ItemOrderRespository : BaseRepository<ItemOrder>, IItemOrderRespository
     {
+
+        private readonly IItemOrderRespository itemOrderRespository;
+
         public ItemOrderRespository(ApplicationContext context) : base(context)
         {
+        }
+
+        public ItemOrder GetItemOrder(int itemOrderId)
+        {
+            return
+            dbSet
+                .Where(ip => ip.Id == itemOrderId)
+                .SingleOrDefault();
+        }
+
+        public void RemoveItemOrder(int itemOrderId)
+        {
+            dbSet.Remove(GetItemOrder(itemOrderId));
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using AeraStore_WebApp.Models;
+using AeraStore_WebApp.Models.ViewModels;
 using AeraStore_WebApp.Repositories.Interface;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +13,14 @@ namespace AeraStore_WebApp.Repositories
     public class OrderRepository : BaseRepository<Order>, IOrderRepository
     {
         private readonly IHttpContextAccessor contextAccessor;
-        public OrderRepository(ApplicationContext context, IHttpContextAccessor contextAccessor) : base(context)
+        private readonly IItemOrderRespository itemOrderRespository;
+        private readonly IClientRepository clientRepository;
+
+        public OrderRepository(ApplicationContext context, IHttpContextAccessor contextAccessor, IItemOrderRespository itemOrderRespository, IClientRepository clientRepository) : base(context)
         {
             this.contextAccessor = contextAccessor;
+            this.itemOrderRespository = itemOrderRespository;
+            this.clientRepository = clientRepository;
         }
 
         public void AddItem(string code)
@@ -46,8 +53,11 @@ namespace AeraStore_WebApp.Repositories
         public Order GetOrder()
         {
             var orderId = GetOrderId();
-            var order = dbSet.
-                Where(o => o.Id == orderId)
+            var order = dbSet
+                .Include(p => p.Itens)
+                    .ThenInclude(i => i.Product)
+                .Include(p => p.Client)
+                .Where(o => o.Id == orderId)
                 .SingleOrDefault();
 
             if(order == null)
@@ -69,5 +79,36 @@ namespace AeraStore_WebApp.Repositories
         {
             contextAccessor.HttpContext.Session.SetInt32("orderId", orderId);
         }
+
+        public UpDateQTDeResponse UpdateQTD(ItemOrder itemOrder)
+        {
+            var itemorderDB = itemOrderRespository.GetItemOrder(itemOrder.Id);
+            
+
+            if (itemorderDB != null)
+            {
+                itemorderDB.UpDateQTDe(itemOrder.Quantity);
+
+                if(itemOrder.Quantity == 0)
+                {
+                    itemOrderRespository.RemoveItemOrder(itemOrder.Id);
+                }
+
+                context.SaveChanges();
+                var chartViewModel = new ChartViewModel(GetOrder().Itens);
+
+                return new UpDateQTDeResponse(itemorderDB, chartViewModel);
+            }
+
+            throw new ArgumentException("ItemOrder not found!");
+        }
+
+        public Order UpdateClient(Client client)
+        {
+            var order = GetOrder();
+            clientRepository.UpdateCli(order.Client.Id, client);
+            return order;
+        }
     }
+    
 }

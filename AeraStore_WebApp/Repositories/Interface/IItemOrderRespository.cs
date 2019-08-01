@@ -1,6 +1,10 @@
-﻿namespace AeraStore_WebApp.Repositories.Interface
+﻿using AeraStore_WebApp.Models;
+
+namespace AeraStore_WebApp.Repositories.Interface
 {
-    interface IItemOrderRespository
+    public interface IItemOrderRespository
     {
+        ItemOrder GetItemOrder(int itemOrderId);
+        void RemoveItemOrder(int itemOrderId);
     }
 }

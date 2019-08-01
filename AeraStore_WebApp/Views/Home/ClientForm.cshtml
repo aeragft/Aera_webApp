@@ -1,0 +1,118 @@
+﻿@{ 
+    ViewData["Title"] = "Client Form";
+}
+
+@model Client
+
+<h4>Client Form</h4>
+
+<form asp-action="OrderList" method="post">
+
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="custom-control-label" for="nameClient">Name</label>
+                    <input type="text" class="form-control" id="nameClient" placeholder="Full Name of Client"
+                           asp-for="@Model.Name">
+                    <span asp-validation-for="@Model.Name" class="text-danger" ></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="custom-control-label" for="Email">E-mail</label>
+                <input type="email" class="form-control" id="email" placeholder="Email"
+                       asp-for="@Model.Email" >
+                <span asp-validation-for="@Model.Email" class="text-danger"></span>
+
+            </div>
+            <div class="form-group">
+                <label class="custom-control-label" for="Telephone">Contact</label>
+                <input type="text" class="form-control" id="telephone" placeholder="Telephone"
+                       asp-for="@Model.Telephone">
+                <span asp-validation-for="@Model.Telephone" class="text-danger"></span>
+
+            </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label class="custom-control-label" for="Address">Address</label>
+                        <input type="text" class="form-control" id="address" placeholder="Address"
+                               asp-for="@Model.Address">
+                        <span asp-validation-for="@Model.Address" class="text-danger"></span>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="custom-control-label" for="Complement">Complement</label>
+                        <input type="text" class="form-control" id="complement" placeholder="Complement"
+                               asp-for="@Model.Complement">
+                    </div>
+                    <div class="form-group">
+                        <label class="custom-control-label" for="Neighborhood">Neighborhood</label>
+                        <input type="text" class="form-control" id="neighborhood" placeholder="Neighborhood"
+                               asp-for="@Model.Neighborhood">
+                        <span asp-validation-for="@Model.Neighborhood" class="text-danger"></span>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="custom-control-label" for="Country">Country</label>
+                        <input type="text" class="form-control" id="Country" placeholder="Country"
+                               asp-for="@Model.County">
+                        <span asp-validation-for="@Model.County" class="text-danger"></span>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="custom-control-label" for="State">State</label>
+                        <select class="form-control single-select" name="State"
+                                asp-for="@Model.State">
+                            <option selected value="">[Select state]</option>
+                            <option value="AC">Acre</option>
+                            <option value="AL">Alagoas</option>
+                            <option value="AP">Amapá</option>
+                            <option value="AM">Amazonas</option>
+                            <option value="BA">Bahia</option>
+                            <option value="CE">Ceará</option>
+                            <option value="DF">Distrito Federal</option>
+                            <option value="ES">Espirito Santo</option>
+                            <option value="GO">Goías</option>
+                            <option value="MA">Maranhão</option>
+                            <option value="MT">Mato Grosso</option>
+                            <option value="MS">Mato Grosso do Sul</option>
+                            <option value="MG">Minas Gerais</option>
+                            <option value="PA">Pará</option>
+                            <option value="PB">Paraíba</option>
+                            <option value="PR">Parana</option>
+                            <option value="PE">Pernambuco</option>
+                            <option value="PI">Piauí</option>
+                            <option value="RJ">Rio de Janeiro</option>
+                            <option value="RN">Rio Grande do Norte</option>
+                            <option value="RS">Rio Grande do Sul</option>
+                            <option value="RO">Rondônia</option>
+                            <option value="RR">Roraima</option>
+                            <option value="SC">Santa Catarina</option>
+                            <option value="SP">São Paulo</option>
+                            <option value="SE">Sergipe</option>
+                            <option value="TO">Tocantins</option>
+                        </select>
+                        <span asp-validation-for="@Model.State" class="text-danger"></span>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="custom-control-label" for="zipcode">Zipcode</label>
+                        <input type="text" class="form-control" id="zipcode" placeholder="ZipCode"
+                               asp-for="@Model.Zipcode">
+                        <span asp-validation-for="@Model.Zipcode" class="text-danger"></span>
+
+                    </div>
+                
+                    <div class="form-group">
+                        <a class="btn btn-success" asp-action="catalogo"></a>
+                    </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+</form>
+

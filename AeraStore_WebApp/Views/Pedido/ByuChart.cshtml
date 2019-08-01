@@ -1,10 +1,12 @@
-﻿@{ 
+﻿@{
     ViewData["Title"] = "BuyChart";
 }
-@model IList<ItemOrder>;
+@model ChartViewModel;
 
 <h3>My Chart</h3>
+<form method="post" asp-action="chart">
 
+</form>
 <div class="panel panel-default">
     <div class="panel-heading">
 
@@ -27,10 +29,10 @@
     </div>
     <div class="panel-body">
 
-        @foreach (var item in Model)
+        @foreach (var item in Model.Itens)
         {
 
-            <div class="row row-center product-line">
+            <div class="row row-center product-line" item-id="@item.Id">
                 <div class="col-md-3">
                     <img class="img-product-chart" src="~/images/products/@(item.Product.Code).jpg" />
                 </div>
@@ -41,14 +43,17 @@
                 <div class="col-md-2 text-center">
                     <div class="input-group">
                         <span class="input-group-btn">
-                            <button class="btn btn-default">
+                            <button class="btn btn-default"
+                                    onclick="chart.clickDecrement(this)">
                                 <span class="glyphicon-minus"></span>
                             </button>
                         </span>
                         <input type="text" value="@(item.Quantity)"
-                               class="form-control text-center" />
+                               class="form-control text-center" 
+                               onblur="chart.updateQtde(this)"/>
                         <span class="input-group-btn">
-                            <button class="btn btn-default">
+                            <button class="btn btn-default"
+                                   onclick="chart.clickIncrement(this)" >
                                 <span class="glyphicon-plus"></span>
                             </button>
                         </span>
@@ -56,7 +61,7 @@
                 </div>
                 <div class="col-md-2">
                     R$<span class="pull-right" subtotal>
-                    @(item.Quantity * item.UniValue)
+                        @(item.Quantity * item.UniValue)
                     </span>
                 </div>
             </div>
@@ -68,13 +73,13 @@
         <div class="row">
             <div class="col-md-10">
                 <span number-itens>
-                    Total:@(Model.Count())
+                    Total:@(Model.Itens.Count())
                     itens
                 </span>
             </div>
             <div class="col-md-2">
                 Total: R$ <span class="pull-right" total>
-                @(Model.Sum(i => i.Quantity * i.UniValue))
+                    @(Model.Total)
                 </span>
             </div>
         </div>
@@ -89,7 +94,20 @@
                 Add More Products
             </a>
             <a class="btn btn-success" asp-action="OrderList">
-                Finish BuyChart</a>
+                Finish BuyChart
+            </a>
         </div>
     </div>
 </div>
+
+
+@section Scripts
+    {
+    <script type="text/javascript">
+
+    </script>
+
+}
+
+
+

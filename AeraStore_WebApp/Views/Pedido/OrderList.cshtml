@@ -18,18 +18,21 @@
         <hr />
         <div class="row">
             <div class="col-md-3">
-                <h6>Informaçoes do Comprador: </h6>
+                <h6>Information Buyer: </h6>
             </div>
             <div class="col-md-3">
-                <div>Nome Comprador</div>
-                <div>002.949.011-02</div>
-                <div>(15) 3227-8280</div>
+                @Model.Client.Email
             </div>
             <div class="col-md-3">
+                <div>@Model.Client.Name</div>
+                <div>@Model.Client.Telephone</div>
+            </div>
+
+            <div class="col-md-6">
                 <h5>Endereço de Entrega</h5>
-                <div>Rua: Avenida dos Entregadores, nº 250</div>
-                <div>Jardim Testador</div> <div>Brazuca</div>
-                <div>19015-955</div>
+                <div>@Model.Client.Address Complement - @Model.Client.Complement</div>
+                <div>@Model.Client.Neighborhood / @Model.Client.State</div> <div>@Model.Client.Country</div>
+                <div>Zipcode: @Model.Client.Zipcode</div>
             </div>
         </div>
         <hr />
