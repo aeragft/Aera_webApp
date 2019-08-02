@@ -8,10 +8,10 @@ namespace AeraStore_WebApp.Repositories.Interface
 {
     public interface IOrderRepository
     {
-        Order GetOrder();
-        void AddItem(string code);
-        UpDateQTDeResponse UpdateQTD(ItemOrder itemOrder);
-        Order UpdateClient(Client client);
+        Task<Order> GetOrder();
+        Task AddItem(string code);
+        Task<UpDateQTDeResponse> UpdateQTD(ItemOrder itemOrder);
+        Task<Order> UpdateClient(Client client);
 
     }
 }

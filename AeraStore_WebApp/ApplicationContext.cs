@@ -1,5 +1,4 @@
 ﻿using AeraStore_WebApp.Models;
-using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
 namespace AeraStore_WebApp

@@ -1,10 +1,11 @@
 ﻿using AeraStore_WebApp.Models;
+using System.Threading.Tasks;
 
 namespace AeraStore_WebApp.Repositories.Interface
 {
     public interface IItemOrderRespository
     {
-        ItemOrder GetItemOrder(int itemOrderId);
-        void RemoveItemOrder(int itemOrderId);
+        Task<ItemOrder> GetItemOrder(int itemOrderId);
+        Task RemoveItemOrder(int itemOrderId);
     }
 }

@@ -1,7 +1,9 @@
-﻿namespace AeraStore_WebApp
+﻿using System.Threading.Tasks;
+
+namespace AeraStore_WebApp
 {
     public interface IDataService
     {
-        void SetupInitialDB();
+        Task SetupInitialDB();
     }
 }

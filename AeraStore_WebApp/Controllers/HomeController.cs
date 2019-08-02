@@ -35,10 +35,11 @@ namespace AeraStore_WebApp.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-        public IActionResult Client()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Client()
         {
-            var order = orderRepository.GetOrder();
+            var order = await orderRepository.GetOrder();
             if (order == null)
             {
                 return RedirectToAction("Catalogo");
