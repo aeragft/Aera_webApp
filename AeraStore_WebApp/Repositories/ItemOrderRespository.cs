@@ -1,5 +1,6 @@
 ﻿using AeraStore_WebApp.Models;
 using AeraStore_WebApp.Repositories.Interface;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,23 +11,21 @@ namespace AeraStore_WebApp.Repositories
     public class ItemOrderRespository : BaseRepository<ItemOrder>, IItemOrderRespository
     {
 
-        private readonly IItemOrderRespository itemOrderRespository;
-
         public ItemOrderRespository(ApplicationContext context) : base(context)
         {
         }
 
-        public ItemOrder GetItemOrder(int itemOrderId)
+        public async Task<ItemOrder> GetItemOrder(int itemOrderId)
         {
             return
-            dbSet
-                .Where(ip => ip.Id == itemOrderId)
-                .SingleOrDefault();
+                await  dbSet
+                        .Where(ip => ip.Id == itemOrderId)
+                        .SingleOrDefaultAsync();
         }
 
-        public void RemoveItemOrder(int itemOrderId)
+        public async Task RemoveItemOrder(int itemOrderId)
         {
-            dbSet.Remove(GetItemOrder(itemOrderId));
+            dbSet.Remove(await GetItemOrder(itemOrderId));
         }
     }
 }

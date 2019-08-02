@@ -1,5 +1,6 @@
 ﻿using AeraStore_WebApp.Models;
 using AeraStore_WebApp.Repositories.Interface;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,17 +10,15 @@ namespace AeraStore_WebApp.Repositories
 {
     public class ClientRepository : BaseRepository<Client> , IClientRepository
     {
-        private readonly IClientRepository clientRepository;
 
-        public ClientRepository(ApplicationContext context, IClientRepository clientRepository) : base(context)
+        public ClientRepository(ApplicationContext context) : base(context)
         {
-            this.clientRepository = clientRepository;
         }
 
-        public Client UpdateCli(int clientId, Client newClient)
+        public async Task<Client> UpdateCli(int clientId, Client newClient)
         {
-            var clientDB = dbSet.Where(c => c.Id == clientId)
-                .SingleOrDefault();
+            var clientDB = await dbSet.Where(c => c.Id == clientId)
+                .SingleOrDefaultAsync();
 
             if(clientDB == null)
             {
@@ -27,7 +26,7 @@ namespace AeraStore_WebApp.Repositories
             }
 
             clientDB.Update(newClient);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return clientDB;
         }
     }

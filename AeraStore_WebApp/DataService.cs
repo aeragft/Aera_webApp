@@ -1,6 +1,7 @@
 ﻿using AeraStore_WebApp.Repositories;
 using AeraStore_WebApp.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace AeraStore_WebApp
 {
@@ -15,9 +16,9 @@ namespace AeraStore_WebApp
             this.productRepository = productRepository;
         }
 
-        public void SetupInitialDB()
+        public async Task SetupInitialDB()
         {
-            context.Database.Migrate();
+            await context.Database.MigrateAsync();
         }
     }
 }

@@ -8,6 +8,6 @@ namespace AeraStore_WebApp.Repositories.Interface
 {
     public interface IClientRepository
     {
-        Client UpdateCli(int clientId, Client newClient);
+        Task<Client> UpdateCli(int clientId, Client newClient);
     }
 }

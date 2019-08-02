@@ -3,6 +3,7 @@ using AeraStore_WebApp.Models.ViewModels;
 using AeraStore_WebApp.Repositories.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AeraStore_WebApp.Controllers
 {
@@ -17,33 +18,36 @@ namespace AeraStore_WebApp.Controllers
             this.orderRepository = orderRepository;
             this.itemOrderRespository = itemOrderRespository;
         }
-        public IActionResult OrderList(Client client)   
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> OrderList(Client client)   
         {
             if (ModelState.IsValid)
             {
-                Order order = orderRepository.UpdateClient(client);
-                return View(order);
+                 
+                return View(await orderRepository.UpdateClient(client));
             }
             return RedirectToAction("Client");
 
             
         }
-        public IActionResult BuyChart(string code)
+        public async Task<IActionResult> BuyChart(string code)
         {
             if(!string.IsNullOrEmpty(code))
             {
-                orderRepository.AddItem(code);
+                await orderRepository.AddItem(code);
             }
-            List<ItemOrder> itens = orderRepository.GetOrder().Itens;
+            Order order = await orderRepository.GetOrder();
+            List<ItemOrder> itens = order.Itens;
             ChartViewModel chartViewModel = new ChartViewModel(itens);
             return View(chartViewModel);
         }
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public UpDateQTDeResponse UpdateQTD([FromBody]ItemOrder itemOrder)
+        public async Task<UpDateQTDeResponse> UpdateQTD([FromBody]ItemOrder itemOrder)
         {
-            return orderRepository.UpdateQTD(itemOrder);
+            return await orderRepository.UpdateQTD(itemOrder);
         }
     }
 }

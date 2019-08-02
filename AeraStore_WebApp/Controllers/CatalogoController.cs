@@ -1,5 +1,6 @@
 ﻿using AeraStore_WebApp.Repositories.Interface;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace AeraStore_WebApp.Controllers
 {
@@ -11,9 +12,9 @@ namespace AeraStore_WebApp.Controllers
         {
             this.productRepository = productRepository;
         }
-        public IActionResult Catalogo()
+        public async Task<IActionResult> Catalogo()
         {
-            return View(productRepository.GetProducts());
+            return View(await productRepository.GetProducts());
         }
     }
 }

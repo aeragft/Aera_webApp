@@ -4,7 +4,6 @@ using AeraStore_WebApp.Repositories.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,55 +15,59 @@ namespace AeraStore_WebApp.Repositories
         private readonly IItemOrderRespository itemOrderRespository;
         private readonly IClientRepository clientRepository;
 
-        public OrderRepository(ApplicationContext context, IHttpContextAccessor contextAccessor, IItemOrderRespository itemOrderRespository, IClientRepository clientRepository) : base(context)
+        public OrderRepository(ApplicationContext context, 
+            IHttpContextAccessor contextAccessor, 
+            IItemOrderRespository itemOrderRespository, 
+            IClientRepository clientRepository) : base(context)
         {
             this.contextAccessor = contextAccessor;
             this.itemOrderRespository = itemOrderRespository;
             this.clientRepository = clientRepository;
         }
 
-        public void AddItem(string code)
+        public async Task AddItem(string code)
         {
-            var product = context.Set<Product>()
+            var product = await context.Set<Product>()
                 .Where(p => p.Code == code)
-                .SingleOrDefault();
+                .SingleOrDefaultAsync();
 
             if(product == null)
             {
                 throw new ArgumentException("Product is Not Found!");
             }
 
-            var order = GetOrder();
+            var order = await GetOrder();
 
-            var itemOrder = context.Set<ItemOrder>()
-                .Where(i => i.Product.Code == code && i.Order.Id == order.Id)
-                .SingleOrDefault();
+            var itemOrder = await context.Set<ItemOrder>()
+                                .Where(i => i.Product.Code == code && i.Order.Id == order.Id)
+                                .SingleOrDefaultAsync();
 
             if(itemOrder == null)
             {
                 itemOrder = new ItemOrder(order, product, 1, product.Cost);
-                context.Set<ItemOrder>()
-                    .Add(itemOrder);
-                context.SaveChanges();
+                await context.Set<ItemOrder>()
+                    .AddAsync(itemOrder);
+
+                await context.SaveChangesAsync();
             }
 
         }
 
-        public Order GetOrder()
+        public async Task<Order> GetOrder()
         {
             var orderId = GetOrderId();
-            var order = dbSet
+            var order = await dbSet
                 .Include(p => p.Itens)
                     .ThenInclude(i => i.Product)
                 .Include(p => p.Client)
                 .Where(o => o.Id == orderId)
-                .SingleOrDefault();
+                .SingleOrDefaultAsync();
 
             if(order == null)
             {
                 order = new Order();
                 dbSet.Add(order);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
                 SetOrderId(order.Id);
             }
             return order;
@@ -80,9 +83,9 @@ namespace AeraStore_WebApp.Repositories
             contextAccessor.HttpContext.Session.SetInt32("orderId", orderId);
         }
 
-        public UpDateQTDeResponse UpdateQTD(ItemOrder itemOrder)
+        public async Task<UpDateQTDeResponse> UpdateQTD(ItemOrder itemOrder)
         {
-            var itemorderDB = itemOrderRespository.GetItemOrder(itemOrder.Id);
+            var itemorderDB = await itemOrderRespository.GetItemOrder(itemOrder.Id);
             
 
             if (itemorderDB != null)
@@ -91,11 +94,13 @@ namespace AeraStore_WebApp.Repositories
 
                 if(itemOrder.Quantity == 0)
                 {
-                    itemOrderRespository.RemoveItemOrder(itemOrder.Id);
+                   await itemOrderRespository.RemoveItemOrder(itemOrder.Id);
                 }
 
-                context.SaveChanges();
-                var chartViewModel = new ChartViewModel(GetOrder().Itens);
+                await context.SaveChangesAsync();
+
+                var order = await GetOrder();
+                var chartViewModel = new ChartViewModel(order.Itens);
 
                 return new UpDateQTDeResponse(itemorderDB, chartViewModel);
             }
@@ -103,10 +108,10 @@ namespace AeraStore_WebApp.Repositories
             throw new ArgumentException("ItemOrder not found!");
         }
 
-        public Order UpdateClient(Client client)
+        public async Task<Order> UpdateClient(Client client)
         {
-            var order = GetOrder();
-            clientRepository.UpdateCli(order.Client.Id, client);
+            var order = await GetOrder();
+            await clientRepository.UpdateCli(order.Client.Id, client);
             return order;
         }
     }
